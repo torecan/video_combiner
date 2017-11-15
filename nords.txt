@@ -2,11 +2,6 @@
 STUDIO VISION IMAGE/VIDEO/IMAGE FOR SOUTH AND NORTH SCREENS
 MÜNCHEN 2017
 TÖRECAN CELIK
-
-combiner () for  LINK
-combiner2 () for  RECHT
-
-
 */
 
 #include "opencv\cv.h"
@@ -158,9 +153,9 @@ int main(int argc, char** argv) {
 	img = cvQueryFrame(capture);
 	img2 = cvLoadImage("C://Users//t.celik//Desktop//img3.png");
 
-	final_out = cvCreateImage(cvSize(1184, 1080), img->depth, 3);
+	final_out = cvCreateImage(cvSize(1920, 1080), img->depth, 3);
 
-	capturer = cvCreateImage(cvSize(2336, 192), img->depth, img->nChannels);
+	capturer = cvCreateImage(cvSize(1184, 192), img->depth, img->nChannels);
 
 	CvVideoWriter *writer = cvCreateVideoWriter(
 		"C://Users//t.celik//Desktop//write2r.avi",
@@ -183,7 +178,7 @@ int main(int argc, char** argv) {
 		if (!img) break;
 
 		cvResize(img, resizer);
-		Combiner();
+		Combiner2();
 		NorthDivider(capturer);
 	//	NorthDivider(capturer);
 
