@@ -21,6 +21,9 @@ IplImage* img;
 IplImage* img1;
 IplImage* img2;
 IplImage* img3;
+IplImage* img4;
+IplImage* img5;
+
 
 IplImage* resizer;
 
@@ -58,7 +61,7 @@ void A1Divider(IplImage*imge) {
 	cvCopy(imge, final_out, NULL);
 
 	cvResetImageROI(final_out);
-//	cvResetImageROI(img);
+	//	cvResetImageROI(img);
 
 
 }
@@ -69,8 +72,8 @@ void Combiner() {
 
 	// RIGHT IMAGE
 
-	cvSetImageROI(capturer, cvRect(0, 0, (img1->width ), img1->height));
-	cvSetImageROI(img1, cvRect(0, 0, (img1->width ), img1->height));
+	cvSetImageROI(capturer, cvRect(0, 0, (img1->width), img1->height));
+	cvSetImageROI(img1, cvRect(0, 0, (img1->width), img1->height));
 
 	cvCopy(img1, capturer, NULL);
 	cvResetImageROI(img1);
@@ -100,11 +103,17 @@ void Combiner() {
 int main(int argc, char** argv) {
 
 	//cvNamedWindow("xample2", CV_WINDOW_AUTOSIZE);
-	CvCapture* capture = cvCreateFileCapture("C://Users//t.celik//Desktop//Allianz_Familien_Eingang_04.mp4");
-	CvCapture* capture2 = cvCreateFileCapture("C://Users//t.celik//Desktop//17113_FCB_Mobil_Stadium_Vision_Animation_2292x192px.mp4");
+	CvCapture* capture = cvCreateFileCapture("C://Users//t.celik//Desktop//Allianz_Family_Entrance.mp4");
+	CvCapture* capture2 = cvCreateFileCapture("C://Users//t.celik//Desktop//FCB_Mobil_Stadium_Vision_Animation_2088x192px_01_32.mp4");
+	CvCapture* capture3= cvCreateFileCapture("C://Users//t.celik//Desktop//Allianz_Family_Entrance.mp4");
+	CvCapture* capture4 = cvCreateFileCapture("C://Users//t.celik//Desktop//Allianz_Family_Entrance.mp4");
+
 
 	img = cvQueryFrame(capture);
 	img1 = cvQueryFrame(capture2);
+	img4= cvQueryFrame(capture3);
+	img5 = cvQueryFrame(capture4);
+	IplImage* img6 = cvLoadImage("C://Users//t.celik//Desktop//tests.png");
 
 	img2 = cvLoadImage("C://Users//t.celik//Desktop//img3.png");
 
@@ -115,30 +124,66 @@ int main(int argc, char** argv) {
 	CvVideoWriter *writer = cvCreateVideoWriter(
 		"C://Users//t.celik//Desktop//write2r.avi",
 		CV_FOURCC('M', 'J', 'P', 'G'),
-		24,
+		30,
 		cvSize(final_out->width, final_out->height));
 
 
-	int r_wid = (2976  - ((img1->width ) + img2->width));
+	int r_wid = (2976 - ((img1->width) + img2->width));
 
 
 
 	resizer = cvCreateImage(cvSize(r_wid, 192), img->depth, img->nChannels);
-	cout << resizer->width << "\t" << resizer->height << "\n" ;
+	cout << resizer->width << "\t" << resizer->height << "\n";
 
 	//	cout << resizer->width << resizer->height;
 
 	while (img1) {
 
+
 		img = cvQueryFrame(capture);
 		img1 = cvQueryFrame(capture2);
-		
-		if (!img)
+
+		if (!img1) break;
+
+
+		if (!img) 
 		{
-			break;
+			img4 = cvQueryFrame(capture3);
+
+			if (!img4) {
+				
+				img5 = cvQueryFrame(capture4);
+
+				if (!img5) {
+					cout << img6->width << "\t" << img6->height << "\n";
+					cout << resizer->width << "\t" << resizer->height << "\n";
+					cvCopy(img6, resizer);
+					Combiner();
+					A1Divider(capturer);
+					cvWriteFrame(writer, final_out);
+				}
+				else {
+					cout << img5->width << "\t" << img5->height << "\n";
+					cout << resizer->width << "\t" << resizer->height << "\n";
+					cvCopy(img5, resizer);
+					Combiner();
+					A1Divider(capturer);
+					cvWriteFrame(writer, final_out);
+				}
+			
+			}
+
+			else{
+				
+				cout << img4->width << "\t" << img4->height << "\n";
+				cout << resizer->width << "\t" << resizer->height << "\n";
+				cvCopy(img4, resizer);
+				Combiner();
+				A1Divider(capturer);
+				cvWriteFrame(writer, final_out);
+			}
 		}
-
-
+		else {
 			cvResize(img, resizer);
 			Combiner();
 			A1Divider(capturer);
@@ -147,8 +192,8 @@ int main(int argc, char** argv) {
 			//	cvShowImage("xample3", final_out);
 			cvWriteFrame(writer, final_out);
 
-		
-		
+		}
+
 
 	}
 
