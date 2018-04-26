@@ -124,7 +124,7 @@ int main(int argc, char** argv) {
 	CvVideoWriter *writer = cvCreateVideoWriter(
 		"C://Users//t.celik//Desktop//write2r.avi",
 		CV_FOURCC('M', 'J', 'P', 'G'),
-		30,
+		20,
 		cvSize(final_out->width, final_out->height));
 
 
